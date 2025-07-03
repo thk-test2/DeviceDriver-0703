@@ -1,5 +1,4 @@
 #pragma once
-#include <set>
 #include <string>
 #include <stdexcept>
 
@@ -19,8 +18,11 @@ public:
     }
 
 protected:
-    const int MAX_TRY_COUNT = 5;
+    const int MAX_TRY_COUNT = 4;
     FlashMemoryDevice* m_hardware;
+
+private:
+    void postContidionCheck(long address, int result);
 };
 
 class ReadFailException : public std::exception {
