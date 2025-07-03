@@ -50,10 +50,11 @@ TEST_F(DeviceDriverFixture, ReadFromHWSuccess) {
 
 TEST_F(DeviceDriverFixture, WriteToHWFail) {
 	EXPECT_CALL(hardware, read((long)0xA))
+		.Times(5)
 		.WillRepeatedly(Return((int)0xAA));
 
 	try {
-		driver.write((long)0xA, (int)0xBB);
+		driver.write((long)0xA, 33);
 	}
 	catch (WriteFailException& e) {
 		EXPECT_EQ(std::string{ e.what() },

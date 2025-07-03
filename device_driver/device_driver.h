@@ -22,6 +22,7 @@ protected:
     FlashMemoryDevice* m_hardware;
 
 private:
+    void preConditionCheck(long address);
     void postContidionCheck(long address, int result);
 };
 

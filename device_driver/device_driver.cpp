@@ -26,10 +26,15 @@ void DeviceDriver::postContidionCheck(long address, int result)
 
 void DeviceDriver::write(long address, int data)
 {
+    preConditionCheck(address);
+
+    m_hardware->write(address, (unsigned char)data);
+}
+
+void DeviceDriver::preConditionCheck(long address)
+{
     int result = read(address);
     if (result != 0xFF) {
         throw WriteFailException("이미 데이터가 쓰여진 주소입니다.");
     }
-
-    m_hardware->write(address, (unsigned char)data);
 }
