@@ -23,26 +23,24 @@ public:
 };
 
 TEST_F(DeviceDriverFixture, ReadFromHWSuccess) {
-	EXPECT_CALL(hardware, read(_))
+	EXPECT_CALL(hardware, read((long)0xA))
 		.Times(5)
-		.WillRepeatedly(Return(99));
+		.WillRepeatedly(Return((int)0xDD));
 
-	int data = driver.read(0xFF);
-
-	EXPECT_EQ(99, data);
+	EXPECT_EQ((int)0xDD, driver.read(0xA));
 }
 
 TEST_F(DeviceDriverFixture, ReadFromHWFail) {
-	EXPECT_CALL(hardware, read(_))
+	EXPECT_CALL(hardware, read((long)0xA))
 		.Times(5)
-		.WillOnce(Return(99))
-		.WillOnce(Return(99))
-		.WillOnce(Return(99))
-		.WillOnce(Return(99))
-		.WillOnce(Return(100));
+		.WillOnce(Return((int)0xDD))
+		.WillOnce(Return((int)0xDD))
+		.WillOnce(Return((int)0xDD))
+		.WillOnce(Return((int)0xDD))
+		.WillOnce(Return((int)0xCC));
 
 	try {
-		driver.read(0xFF);
+		driver.read((long)0xA);
 	}
 	catch (std::runtime_error& e) {
 		EXPECT_EQ(std::string{ e.what() },

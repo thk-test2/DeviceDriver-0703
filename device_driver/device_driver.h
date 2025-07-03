@@ -19,6 +19,7 @@ public:
     }
 
 protected:
+    const int MAX_TRY_COUNT = 5;
     FlashMemoryDevice* m_hardware;
 };
 

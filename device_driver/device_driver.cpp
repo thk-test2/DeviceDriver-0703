@@ -13,7 +13,7 @@ int DeviceDriver::read(long address)
     int result = 0;
     set<int> readSet;
 
-    for (int i = 0; i < 5; ++i) {
+    for (int i = 0; i < MAX_TRY_COUNT; ++i) {
         result = (int)(m_hardware->read(address));
         readSet.insert(result);
     }
