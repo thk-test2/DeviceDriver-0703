@@ -1,5 +1,13 @@
 #include "gmock/gmock.h"
 #include "device_driver.h"
+#include "flash_memory_device.h"
+
+using namespace testing;
+
+class MockFlashMemoryDevice : public FlashMemoryDevice {
+public:
+	MOCK_METHOD(unsigned char, read, (long), (override));
+};
 
 TEST(DeviceDriver, ReadFromHW) {
 	// TODO : replace hardware with a Test Double
