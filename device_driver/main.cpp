@@ -7,13 +7,17 @@ using namespace testing;
 class MockFlashMemoryDevice : public FlashMemoryDevice {
 public:
 	MOCK_METHOD(unsigned char, read, (long), (override));
+	MOCK_METHOD(void, write, (long, unsigned char), (override));
 };
 
 TEST(DeviceDriver, ReadFromHW) {
 	// TODO : replace hardware with a Test Double
-	FlashMemoryDevice* hardware = nullptr;
-	DeviceDriver driver{ hardware };
+	//FlashMemoryDevice* hardware = nullptr;
+	MockFlashMemoryDevice hardware;
+	DeviceDriver driver{ &hardware };
+
 	int data = driver.read(0xFF);
+
 	EXPECT_EQ(0, data);
 }
 
