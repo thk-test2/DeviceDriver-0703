@@ -22,14 +22,6 @@ public:
 	DeviceDriver driver;
 };
 
-TEST_F(DeviceDriverFixture, ReadFromHWSuccess) {
-	EXPECT_CALL(hardware, read((long)0xA))
-		.Times(5)
-		.WillRepeatedly(Return((int)0xDD));
-
-	EXPECT_EQ((int)0xDD, driver.read(0xA));
-}
-
 TEST_F(DeviceDriverFixture, ReadFromHWFail) {
 	EXPECT_CALL(hardware, read((long)0xA))
 		.Times(5)
@@ -45,6 +37,27 @@ TEST_F(DeviceDriverFixture, ReadFromHWFail) {
 	catch (ReadFailException& e) {
 		EXPECT_EQ(std::string{ e.what() },
 			std::string{ "읽은 값들이 일치하지 않습니다." });
+	}
+}
+
+TEST_F(DeviceDriverFixture, ReadFromHWSuccess) {
+	EXPECT_CALL(hardware, read((long)0xA))
+		.Times(5)
+		.WillRepeatedly(Return((int)0xDD));
+
+	EXPECT_EQ((int)0xDD, driver.read(0xA));
+}
+
+TEST_F(DeviceDriverFixture, WriteToHWFail) {
+	EXPECT_CALL(hardware, read((long)0xA))
+		.WillRepeatedly(Return((int)0xAA));
+
+	try {
+		driver.write((long)0xA, (int)0xBB);
+	}
+	catch (WriteFailException& e) {
+		EXPECT_EQ(std::string{ e.what() },
+			std::string{ "이미 데이터가 쓰여진 주소입니다." });
 	}
 }
 
