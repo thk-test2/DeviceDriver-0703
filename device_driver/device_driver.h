@@ -1,4 +1,8 @@
 #pragma once
+#include <set>
+#include <string>
+#include <stdexcept>
+
 #include "flash_memory_device.h"
 
 class DeviceDriver

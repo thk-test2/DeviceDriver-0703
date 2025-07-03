@@ -1,5 +1,5 @@
+
 #include "device_driver.h"
-#include <set>
 
 using namespace std;
 
@@ -18,7 +18,10 @@ int DeviceDriver::read(long address)
         readSet.insert(result);
     }
     
-    if (readSet.size() > 1);
+    if (readSet.size() > 1) {
+        throw std::runtime_error("읽은 값들이 일치하지 않습니다.");
+    }
+
     return result;
 }
 

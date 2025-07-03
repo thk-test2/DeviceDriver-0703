@@ -1,3 +1,4 @@
+
 #include "gmock/gmock.h"
 #include "device_driver.h"
 #include "flash_memory_device.h"
@@ -21,6 +22,27 @@ TEST(DeviceDriver, ReadFromHWSuccess) {
 	int data = driver.read(0xFF);
 
 	EXPECT_EQ(99, data);
+}
+
+TEST(DeviceDriver, ReadFromHWFail) {
+	MockFlashMemoryDevice hardware;
+	DeviceDriver driver{ &hardware };
+
+	EXPECT_CALL(hardware, read(_))
+		.Times(5)
+		.WillOnce(Return(99))
+		.WillOnce(Return(99))
+		.WillOnce(Return(99))
+		.WillOnce(Return(99))
+		.WillOnce(Return(100));
+
+	try {
+		driver.read(0xFF);
+	}
+	catch (std::runtime_error& e) {
+		EXPECT_EQ(std::string{ e.what() },
+			std::string{ "읽은 값들이 일치하지 않습니다." });
+	}
 }
 
 int main() {
