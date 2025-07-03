@@ -1,4 +1,7 @@
 #include "device_driver.h"
+#include <set>
+
+using namespace std;
 
 DeviceDriver::DeviceDriver(FlashMemoryDevice* hardware) 
     : m_hardware(hardware)
@@ -7,8 +10,16 @@ DeviceDriver::DeviceDriver(FlashMemoryDevice* hardware)
 
 int DeviceDriver::read(long address)
 {
-    // TODO: implement this method properly
-    return (int)(m_hardware->read(address));
+    int result = 0;
+    set<int> readSet;
+
+    for (int i = 0; i < 5; ++i) {
+        result = (int)(m_hardware->read(address));
+        readSet.insert(result);
+    }
+    
+    if (readSet.size() > 1);
+    return result;
 }
 
 void DeviceDriver::write(long address, int data)

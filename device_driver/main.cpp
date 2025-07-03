@@ -10,15 +10,17 @@ public:
 	MOCK_METHOD(void, write, (long, unsigned char), (override));
 };
 
-TEST(DeviceDriver, ReadFromHW) {
-	// TODO : replace hardware with a Test Double
-	//FlashMemoryDevice* hardware = nullptr;
+TEST(DeviceDriver, ReadFromHWSuccess) {
 	MockFlashMemoryDevice hardware;
 	DeviceDriver driver{ &hardware };
 
+	EXPECT_CALL(hardware, read(_))
+		.Times(5)
+		.WillRepeatedly(Return(99));
+
 	int data = driver.read(0xFF);
 
-	EXPECT_EQ(0, data);
+	EXPECT_EQ(99, data);
 }
 
 int main() {
