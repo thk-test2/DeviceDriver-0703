@@ -23,3 +23,10 @@ protected:
     FlashMemoryDevice* m_hardware;
 };
 
+class ReadFailException : public std::exception {
+public:
+    explicit ReadFailException(char const* _Message)
+        : exception(_Message)
+    {
+    }
+};

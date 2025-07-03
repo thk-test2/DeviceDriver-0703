@@ -19,7 +19,7 @@ int DeviceDriver::read(long address)
     }
     
     if (readSet.size() > 1) {
-        throw std::runtime_error("읽은 값들이 일치하지 않습니다.");
+        throw ReadFailException("읽은 값들이 일치하지 않습니다.");
     }
 
     return result;

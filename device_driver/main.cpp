@@ -42,7 +42,7 @@ TEST_F(DeviceDriverFixture, ReadFromHWFail) {
 	try {
 		driver.read((long)0xA);
 	}
-	catch (std::runtime_error& e) {
+	catch (ReadFailException& e) {
 		EXPECT_EQ(std::string{ e.what() },
 			std::string{ "읽은 값들이 일치하지 않습니다." });
 	}
