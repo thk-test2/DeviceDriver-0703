@@ -8,9 +8,15 @@
 class DeviceDriver
 {
 public:
+    DeviceDriver() = default;
     DeviceDriver(FlashMemoryDevice* hardware);
+
     int read(long address);
     void write(long address, int data);
+
+    void setDevice(FlashMemoryDevice* hardware) {
+        m_hardware = hardware;
+    }
 
 protected:
     FlashMemoryDevice* m_hardware;

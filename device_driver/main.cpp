@@ -11,10 +11,18 @@ public:
 	MOCK_METHOD(void, write, (long, unsigned char), (override));
 };
 
-TEST(DeviceDriver, ReadFromHWSuccess) {
-	MockFlashMemoryDevice hardware;
-	DeviceDriver driver{ &hardware };
+class DeviceDriverFixture : public Test {
+protected:
+	void SetUp() {
+		driver.setDevice(&hardware);
+	}
 
+public:
+	MockFlashMemoryDevice hardware;
+	DeviceDriver driver;
+};
+
+TEST_F(DeviceDriverFixture, ReadFromHWSuccess) {
 	EXPECT_CALL(hardware, read(_))
 		.Times(5)
 		.WillRepeatedly(Return(99));
@@ -24,10 +32,7 @@ TEST(DeviceDriver, ReadFromHWSuccess) {
 	EXPECT_EQ(99, data);
 }
 
-TEST(DeviceDriver, ReadFromHWFail) {
-	MockFlashMemoryDevice hardware;
-	DeviceDriver driver{ &hardware };
-
+TEST_F(DeviceDriverFixture, ReadFromHWFail) {
 	EXPECT_CALL(hardware, read(_))
 		.Times(5)
 		.WillOnce(Return(99))
