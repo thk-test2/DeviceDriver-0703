@@ -2,6 +2,7 @@
 #include "gmock/gmock.h"
 #include "device_driver.h"
 #include "flash_memory_device.h"
+#include "application.cpp"
 
 using namespace testing;
 
@@ -68,6 +69,30 @@ TEST_F(DeviceDriverFixture, WriteToHWSuccess) {
 		.WillRepeatedly(Return((int)0xFF));
 
 	driver.write((long)0xA, 33);
+}
+
+TEST(Application, ReadAndPrint) {
+	NiceMock<MockFlashMemoryDevice> mockHW;
+	DeviceDriver driver{ &mockHW };
+	Application app{ &driver };
+
+	EXPECT_CALL(mockHW, read(_))
+		.Times(25)
+		.WillRepeatedly(Return(0xFA));
+
+	app.readAndPrint(0x00, 0x04);
+}
+
+TEST(Application, ReadAndPrint) {
+	NiceMock<MockFlashMemoryDevice> mockHW;
+	DeviceDriver driver{ &mockHW };
+	Application app{ &driver };
+
+	EXPECT_CALL(mockHW, read(_))
+		.Times(5)
+		.WillRepeatedly(Return(0xFF));
+
+	app.writeAll(0xA7);
 }
 
 int main() {
