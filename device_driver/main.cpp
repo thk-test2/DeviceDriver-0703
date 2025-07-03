@@ -18,7 +18,7 @@ protected:
 	}
 
 public:
-	MockFlashMemoryDevice hardware;
+	NiceMock<MockFlashMemoryDevice> hardware;
 	DeviceDriver driver;
 };
 
@@ -60,6 +60,14 @@ TEST_F(DeviceDriverFixture, WriteToHWFail) {
 		EXPECT_EQ(std::string{ e.what() },
 			std::string{ "이미 데이터가 쓰여진 주소입니다." });
 	}
+}
+
+TEST_F(DeviceDriverFixture, WriteToHWSuccess) {
+	EXPECT_CALL(hardware, read((long)0xA))
+		.Times(5)
+		.WillRepeatedly(Return((int)0xFF));
+
+	driver.write((long)0xA, 33);
 }
 
 int main() {
